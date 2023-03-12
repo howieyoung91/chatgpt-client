@@ -1,7 +1,7 @@
-package com.github.howieyoung91
+package com.github.howieyoung91.chatgpt.client
 
-import com.github.howieyoung91.completion.CompletionRequest
-import com.github.howieyoung91.completion.CompletionResponse
+import com.github.howieyoung91.chatgpt.client.completion.CompletionRequest
+import com.github.howieyoung91.chatgpt.client.completion.CompletionResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Header

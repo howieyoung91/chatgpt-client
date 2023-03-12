@@ -1,11 +1,12 @@
-package com.github.howieyoung91
+package com.github.howieyoung91.chatgpt.client
 
-import com.github.howieyoung91.completion.CompletionRequest
-import com.github.howieyoung91.completion.CompletionResponse
+import com.github.howieyoung91.chatgpt.client.completion.CompletionRequest
+import com.github.howieyoung91.chatgpt.client.completion.CompletionResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
+import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit
  * @author Howie Young
  * @date 2023/03/12 02:41
  */
-class ChatGPTClient(
+open class ChatGPTClient(
     private val apiKey: String,
     init: Retrofit.Builder.() -> Unit = {
         client(
@@ -35,14 +36,19 @@ class ChatGPTClient(
         init(retrofitBuilder)
     }
 
-    private val retrofit by lazy {
+    private val chatgpt by lazy {
         retrofitBuilder.build()
             .create<OpenAiAPI>()
     }
 
     fun complete(request: CompletionRequest): Response<CompletionResponse> {
-        val call = retrofit.complete(request, apiKey)
+        val call = chatgpt.complete(request, apiKey)
         return call.execute()
+    }
+
+    fun complete(request: CompletionRequest, callback: Callback<CompletionResponse>) {
+        val call = chatgpt.complete(request, apiKey)
+        call.enqueue(callback)
     }
 }
 
