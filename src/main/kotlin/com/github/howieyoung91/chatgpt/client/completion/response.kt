@@ -2,7 +2,7 @@ package com.github.howieyoung91.chatgpt.client.completion
 
 import com.squareup.moshi.Json
 
-open class CompletionResponse(
+data class CompletionResponse(
     var id: String = "",
     var `object`: String = "",
     var created: Int = -1,
@@ -37,7 +37,7 @@ open class CompletionResponse(
     }
 }
 
-open class Choice(
+data class Choice(
     var text: String = "",
     var index: Int = -1,
     var logprobs: Int? = null,
@@ -49,7 +49,7 @@ open class Choice(
  * @author Howie Young
  * @date 2023/03/12 02:36
  */
-open class Usage(
+data class Usage(
     @Json(name = "prompt_tokens")
     var promptTokens: Int? = null,
     @Json(name = "completion_tokens")

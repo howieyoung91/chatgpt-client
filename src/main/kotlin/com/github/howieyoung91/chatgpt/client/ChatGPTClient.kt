@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
  * @date 2023/03/12 02:41
  */
 open class ChatGPTClient(
-    private val apiKey: String,
+    apiKey: String,
     init: Retrofit.Builder.() -> Unit = {
         client(
             OkHttpClient.Builder()
@@ -30,6 +30,7 @@ open class ChatGPTClient(
         addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()))
     },
 ) {
+    private val apiKey = "Bearer $apiKey"
     private val retrofitBuilder = Retrofit.Builder()
 
     init {
