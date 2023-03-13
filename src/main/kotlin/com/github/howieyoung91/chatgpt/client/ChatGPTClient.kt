@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2023 Howie Young
+ * Licensed under the GPL version 3
+ */
+
 package com.github.howieyoung91.chatgpt.client
 
 import com.github.howieyoung91.chatgpt.client.completion.CompletionRequest
@@ -22,15 +27,20 @@ open class ChatGPTClient(
     init: Retrofit.Builder.() -> Unit = {
         client(
             OkHttpClient.Builder()
-                .connectionPool(ConnectionPool(20, 10, TimeUnit.MINUTES))
-                .callTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS).build()
+                .connectionPool(ConnectionPool())
+                .callTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .build()
         )
         baseUrl("https://api.openai.com")
-        addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()))
+        addConverterFactory(
+            MoshiConverterFactory.create(
+                Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
+            )
+        )
     },
 ) {
-    private val apiKey = "Bearer $apiKey"
+    private var apiKey = if (apiKey.isEmpty()) "" else "Bearer $apiKey"
     private val retrofitBuilder = Retrofit.Builder()
 
     init {
