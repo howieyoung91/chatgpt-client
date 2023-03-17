@@ -5,6 +5,8 @@
 
 package com.github.howieyoung91.chatgpt.client
 
+import com.github.howieyoung91.chatgpt.client.chat.ChatCompletionRequest
+import com.github.howieyoung91.chatgpt.client.chat.ChatCompletionResponse
 import com.github.howieyoung91.chatgpt.client.completion.CompletionRequest
 import com.github.howieyoung91.chatgpt.client.completion.CompletionResponse
 import retrofit2.Call
@@ -17,4 +19,13 @@ interface OpenAiAPI {
     @POST("/v1/completions")
     @Headers("Content-Type: application/json")
     fun complete(@Body req: CompletionRequest, @Header("Authorization") apiKey: String): Call<CompletionResponse>
+
+    @POST("/v1/chat/completions")
+    @Headers("Content-Type: application/json")
+    fun chatComplete(
+        @Body
+        req: ChatCompletionRequest,
+        @Header("Authorization")
+        apiKey: String,
+    ): Call<ChatCompletionResponse>
 }

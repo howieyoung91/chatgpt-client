@@ -11,7 +11,7 @@ import com.squareup.moshi.Json
  * @author Howie Young
  * @date 2023/03/12 14:13
  */
-open class CompletionRequest(
+data class CompletionRequest(
     var model: String = "",
     var prompt: String = "",
 ) {
@@ -37,6 +37,8 @@ open class CompletionRequest(
 
     @Json(name = "best_of")
     var bestOf: Int? = null
-    var logit_bias: Map<*, *>? = null
+
+    @Json(name = "logit_bias")
+    var logitBias: Map<*, *>? = null
     var user: String? = null
 }

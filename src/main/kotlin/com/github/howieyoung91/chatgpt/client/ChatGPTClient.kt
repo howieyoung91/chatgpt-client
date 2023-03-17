@@ -5,6 +5,8 @@
 
 package com.github.howieyoung91.chatgpt.client
 
+import com.github.howieyoung91.chatgpt.client.chat.ChatCompletionRequest
+import com.github.howieyoung91.chatgpt.client.chat.ChatCompletionResponse
 import com.github.howieyoung91.chatgpt.client.completion.CompletionRequest
 import com.github.howieyoung91.chatgpt.client.completion.CompletionResponse
 import com.squareup.moshi.Moshi
@@ -24,7 +26,21 @@ import java.util.concurrent.TimeUnit
  */
 open class ChatGPTClient(
     apiKey: String,
-    init: Retrofit.Builder.() -> Unit = {
+    init: Retrofit.Builder.() -> Unit,
+) {
+    private var apiKey = if (apiKey.isEmpty()) "" else "Bearer $apiKey"
+    protected val retrofitBuilder = Retrofit.Builder()
+
+    init {
+        init(retrofitBuilder)
+    }
+
+    private val chatgpt by lazy {
+        retrofitBuilder.build()
+            .create<OpenAiAPI>()
+    }
+
+    constructor(apiKey: String) : this(apiKey, {
         client(
             OkHttpClient.Builder()
                 .connectionPool(ConnectionPool())
@@ -38,19 +54,7 @@ open class ChatGPTClient(
                 Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
             )
         )
-    },
-) {
-    private var apiKey = if (apiKey.isEmpty()) "" else "Bearer $apiKey"
-    private val retrofitBuilder = Retrofit.Builder()
-
-    init {
-        init(retrofitBuilder)
-    }
-
-    private val chatgpt by lazy {
-        retrofitBuilder.build()
-            .create<OpenAiAPI>()
-    }
+    })
 
     fun complete(request: CompletionRequest): Response<CompletionResponse> {
         val call = chatgpt.complete(request, apiKey)
@@ -61,6 +65,14 @@ open class ChatGPTClient(
         val call = chatgpt.complete(request, apiKey)
         call.enqueue(callback)
     }
+
+    fun chatComplete(request: ChatCompletionRequest): Response<ChatCompletionResponse> {
+        val call = chatgpt.chatComplete(request, apiKey)
+        return call.execute()
+    }
+
+    fun chatComplete(request: ChatCompletionRequest, callback: Callback<ChatCompletionResponse>) {
+        val call = chatgpt.chatComplete(request, apiKey)
+        call.enqueue(callback)
+    }
 }
-
-
