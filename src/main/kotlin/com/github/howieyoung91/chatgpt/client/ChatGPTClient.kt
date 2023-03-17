@@ -9,6 +9,8 @@ import com.github.howieyoung91.chatgpt.client.chat.ChatCompletionRequest
 import com.github.howieyoung91.chatgpt.client.chat.ChatCompletionResponse
 import com.github.howieyoung91.chatgpt.client.completion.CompletionRequest
 import com.github.howieyoung91.chatgpt.client.completion.CompletionResponse
+import com.github.howieyoung91.chatgpt.client.edit.EditRequest
+import com.github.howieyoung91.chatgpt.client.edit.EditResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.ConnectionPool
@@ -73,6 +75,16 @@ open class ChatGPTClient(
 
     fun chatComplete(request: ChatCompletionRequest, callback: Callback<ChatCompletionResponse>) {
         val call = chatgpt.chatComplete(request, apiKey)
+        call.enqueue(callback)
+    }
+
+    fun edit(request: EditRequest): Response<EditResponse> {
+        val call = chatgpt.edit(request, apiKey)
+        return call.execute()
+    }
+
+    fun edit(request: EditRequest, callback: Callback<EditResponse>) {
+        val call = chatgpt.edit(request, apiKey)
         call.enqueue(callback)
     }
 }
