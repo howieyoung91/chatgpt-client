@@ -4,7 +4,7 @@
  */
 package com.github.howieyoung91.chatgpt.client.chat
 
-import com.github.howieyoung91.chatgpt.client.completion.Usage
+import com.github.howieyoung91.chatgpt.client.Usage
 import com.squareup.moshi.Json
 
 /**

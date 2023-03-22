@@ -24,7 +24,14 @@ data class EditRequest(
 
     enum class Model(val modelName: String) {
         TEXT_DAVINCI_EDIT_001("text-davinci-edit-001"),
-        CODE_DAVINCI_EDIT_001("code-davinci-edit-001")
+        CODE_DAVINCI_EDIT_001("code-davinci-edit-001");
+
+        companion object {
+            val NAMES = arrayOf(
+                TEXT_DAVINCI_EDIT_001.modelName,
+                CODE_DAVINCI_EDIT_001.modelName
+            )
+        }
     }
 
     override fun toString(): String {

@@ -5,7 +5,8 @@
 
 package com.github.howieyoung91.chatgpt.client.completion
 
-import com.squareup.moshi.Json
+import com.github.howieyoung91.chatgpt.client.Choice
+import com.github.howieyoung91.chatgpt.client.Usage
 
 data class CompletionResponse(
     var id: String = "",
@@ -41,24 +42,3 @@ data class CompletionResponse(
         return result
     }
 }
-
-data class Choice(
-    var text: String = "",
-    var index: Int = -1,
-    var logprobs: Int? = null,
-    @Json(name = "finish_reason")
-    var finishReason: String = "",
-)
-
-/**
- * @author Howie Young
- * @date 2023/03/12 02:36
- */
-data class Usage(
-    @Json(name = "prompt_tokens")
-    var promptTokens: Int? = null,
-    @Json(name = "completion_tokens")
-    var completionTokens: Int? = null,
-    @Json(name = "total_tokens")
-    var totalTokens: Int? = null,
-)
